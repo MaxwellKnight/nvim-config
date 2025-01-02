@@ -64,15 +64,6 @@ Leader key: `Space`
 - `<Esc>` - Clear search highlight
 - `<leader>e` - Show diagnostic float
 
-## Dependencies
-
-- Neovim >= 0.9.0
-- git
-- gcc or clang (for building treesitter parsers)
-- ripgrep (for telescope grep)
-- A C compiler
-- (Optional) A Nerd Font for icons
-
 ## LSP Servers
 
 Automatically installs and configures:
