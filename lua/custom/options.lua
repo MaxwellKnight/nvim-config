@@ -23,17 +23,8 @@ opt.timeoutlen = 300
 opt.splitright = true
 opt.splitbelow = true
 opt.list = true
-opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 opt.inccommand = 'split'
 opt.cursorline = true
 opt.scrolloff = 10
 opt.hlsearch = true
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'cs',
-  callback = function()
-    vim.bo.tabstop = 4
-    vim.bo.shiftwidth = 4
-    vim.bo.expandtab = true
-  end,
-})

@@ -15,7 +15,6 @@ return {
         local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
-
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
         map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -57,6 +56,21 @@ return {
       pyright = {},
       rust_analyzer = {},
       eslint = {},
+      -- Add omnisharp with specific settings
+      omnisharp = {
+        -- Enable settings to ensure proper formatting
+        enable_editorconfig_support = true,
+        enable_roslyn_analyzers = false,
+        organize_imports_on_format = true,
+        -- Add formatting settings
+        on_attach = function(_, bufnr)
+          -- Force 2-space indentation
+          vim.bo[bufnr].tabstop = 1
+          vim.bo[bufnr].softtabstop = 2
+          vim.bo[bufnr].shiftwidth = 2
+          vim.bo[bufnr].expandtab = true
+        end,
+      },
       lua_ls = {
         settings = {
           Lua = {
@@ -73,6 +87,7 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua',
+      'omnisharp',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
