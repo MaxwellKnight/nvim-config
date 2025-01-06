@@ -1,6 +1,8 @@
-# Personal Neovim Configuration
+# Neovim Configuration
 
 My modern Neovim setup focused on development with LSP support, fuzzy finding, and code completion.
+
+**_NOTE:_** This configuration is highly inspired by the [kickstart](https://github.com/nvim-lua/kickstart.nvim) project.
 
 ## Core Features
 
