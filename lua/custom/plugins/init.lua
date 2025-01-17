@@ -10,7 +10,7 @@ return {
 
   -- Core plugins with configuration
   require 'custom.plugins.telescope',
-  require 'custom.plugins.lsp',
+  -- require 'custom.plugins.lsp',
   require 'custom.plugins.treesitter',
   require 'custom.plugins.completion',
   require 'custom.plugins.mini',
