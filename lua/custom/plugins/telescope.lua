@@ -15,11 +15,31 @@ return {
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
   },
   config = function()
+    -- Telescope configuration
     require('telescope').setup {
       defaults = {
         file_ignore_patterns = {
           'node_modules',
         },
+        -- Define a transparent background for Telescope windows
+        on_open = function()
+          -- Set transparency for Telescope background
+          vim.cmd [[
+            highlight TelescopeNormal guibg=none
+            highlight TelescopePromptNormal guibg=none
+            highlight TelescopeResultsNormal guibg=none
+            highlight TelescopePreviewNormal guibg=none
+          ]]
+        end,
+        -- Reset the background transparency when Telescope closes
+        on_close = function()
+          vim.cmd [[
+            highlight TelescopeNormal guibg=NONE
+            highlight TelescopePromptNormal guibg=NONE
+            highlight TelescopeResultsNormal guibg=NONE
+            highlight TelescopePreviewNormal guibg=NONE
+          ]]
+        end,
       },
       extensions = {
         ['ui-select'] = {
@@ -28,9 +48,11 @@ return {
       },
     }
 
+    -- Load Telescope extensions
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
 
+    -- Key mappings for searching
     local builtin = require 'telescope.builtin'
     vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
@@ -45,7 +67,7 @@ return {
 
     vim.keymap.set('n', '<leader>/', function()
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 10,
+        winblend = 10, -- Optional transparency for the current buffer search
         previewer = false,
       })
     end, { desc = '[/] Fuzzily search in current buffer' })

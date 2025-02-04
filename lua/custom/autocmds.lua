@@ -10,3 +10,17 @@ autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- Autocommand for setting transparent background
+autocmd('VimEnter', {
+  desc = 'Set transparent background',
+  group = augroup('custom-transparent-bg', { clear = true }),
+  callback = function()
+    vim.cmd [[
+      highlight Normal guibg=none
+      highlight NonText guibg=none
+      highlight Normal ctermbg=none
+      highlight NonText ctermbg=none
+    ]]
+  end,
+})
