@@ -52,7 +52,39 @@ return {
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     local servers = {
-      clangd = {},
+      clangd = {
+        cmd = {
+          'clangd',
+          '--background-index',
+          '--clang-tidy',
+          '--header-insertion=iwyu',
+          '--completion-style=detailed',
+          '--function-arg-placeholders',
+          '--fallback-style=llvm',
+          '--offset-encoding=utf-16',
+        },
+        init_options = {
+          usePlaceholders = true,
+          completeUnimported = true,
+          clangdFileStatus = true,
+        },
+        on_attach = function(_, bufnr)
+          -- Set up a format on save for C++ files
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            pattern = { '*.cpp', '*.hpp', '*.h' },
+            callback = function()
+              vim.lsp.buf.format { async = false }
+            end,
+            buffer = bufnr,
+          })
+
+          -- Configure the formatter
+          vim.bo[bufnr].tabstop = 2
+          vim.bo[bufnr].softtabstop = 2
+          vim.bo[bufnr].shiftwidth = 2
+          vim.bo[bufnr].expandtab = true
+        end,
+      },
       pyright = {},
       rust_analyzer = {},
       eslint = {},
@@ -66,7 +98,7 @@ return {
         -- Add formatting settings
         on_attach = function(_, bufnr)
           -- Force 2-space indentation
-          vim.bo[bufnr].tabstop = 1
+          vim.bo[bufnr].tabstop = 2
           vim.bo[bufnr].softtabstop = 2
           vim.bo[bufnr].shiftwidth = 2
           vim.bo[bufnr].expandtab = true
@@ -89,6 +121,7 @@ return {
     vim.list_extend(ensure_installed, {
       'stylua',
       'omnisharp',
+      'clangd',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

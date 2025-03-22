@@ -11,6 +11,7 @@ opt.showmode = false
 opt.clipboard = 'unnamedplus'
 opt.breakindent = true
 opt.undofile = true
+opt.guicursor = ''
 
 -- [[ Search ]]
 opt.ignorecase = true
@@ -25,6 +26,6 @@ opt.splitbelow = true
 opt.list = true
 opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 opt.inccommand = 'split'
-opt.cursorline = true
+opt.cursorline = false
 opt.scrolloff = 10
 opt.hlsearch = true
