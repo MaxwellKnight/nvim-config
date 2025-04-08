@@ -17,6 +17,7 @@ return {
   require 'custom.plugins.colorscheme',
   require 'custom.plugins.conform',
   require 'custom.plugins.tmux',
+  require 'custom.plugins.luaship',
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
