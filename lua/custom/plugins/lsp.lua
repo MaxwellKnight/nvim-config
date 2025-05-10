@@ -53,7 +53,7 @@ return {
         },
         flags = common_flags,
         capabilities = capabilities,
-        -- turn off semantic tokens if you don’t use them
+        -- turn off semantic tokens
         on_init = function(client)
           client.server_capabilities.semanticTokensProvider = nil
         end,
@@ -120,7 +120,7 @@ return {
     }
 
     -- ----------------------------------------------------------------------------
-    -- 6) LIGHTWEIGHT LSP ATTACH (your existing mappings)
+    -- 6) LIGHTWEIGHT LSP ATTACH
     -- ----------------------------------------------------------------------------
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('custom-lsp-attach', { clear = true }),
