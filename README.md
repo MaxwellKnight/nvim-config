@@ -1,85 +1,60 @@
-# Neovim Configuration
+# My Neovim config
 
-My modern Neovim setup focused on development with LSP support, fuzzy finding, and code completion.
+Hey 👋 — this is my personal Neovim setup. It's a Lua config built on [lazy.nvim](https://github.com/folke/lazy.nvim), tuned for day-to-day dev work: LSP, fuzzy finding, completion, git, the usual good stuff. Originally riffed off the [kickstart](https://github.com/nvim-lua/kickstart.nvim) idea, then taken in my own direction.
 
-**_NOTE:_** This configuration is highly inspired by the [kickstart](https://github.com/nvim-lua/kickstart.nvim) project.
+Leader key is `<Space>`.
 
-## Core Features
+## What's in here
 
-- Plugin management with lazy.nvim
-- LSP support with auto-installation of language servers
-- Fuzzy finding with Telescope
-- Code completion with nvim-cmp
-- Syntax highlighting with Treesitter
-- Auto-formatting with conform.nvim
-- Git integration
-- Minimal statusline
+- **lazy.nvim** for plugins — bootstraps itself on first launch, so you don't have to
+- **LSP** via `nvim-lspconfig` + `mason` (servers auto-install). Currently wired up for `rust_analyzer`, `clangd`, and `lua_ls`
+- **Completion** with `nvim-cmp` + `LuaSnip` (no Copilot — it's intentionally disabled)
+- **Telescope** for fuzzy finding files, grep, symbols, the works
+- **Treesitter** for syntax highlighting (js/ts, go, c, lua, svelte, markdown)
+- **conform.nvim** for format-on-save (stylua, prettier + eslint, gofumpt)
+- **Harpoon** for jumping between the files you actually care about
+- **Oil** for editing the filesystem like a buffer
+- **Gitsigns** + git blame for git stuff inline
+- **mini.nvim** bits, comments, tmux navigation, and a DAP setup for debugging
+- **catppuccin** theme with a transparent background
 
-## Directory Structure
+## Layout
 
 ```
 ~/.config/nvim/
-├── init.lua                 # Main configuration entry point
-├── .stylua.toml            # Lua formatting rules (column width, indents)
-├── .gitignore              # Git ignore patterns
-└── lua/
-    └── custom/            # Personal configuration files
-        ├── autocmds.lua   # Automatic commands (yank highlight, etc.)
-        ├── keymaps.lua    # Key mappings (navigation, LSP, etc.)
-        ├── options.lua    # Neovim options (numbers, tabs, etc.)
-        └── plugins/       # Plugin configurations
-            ├── init.lua          # Plugin declarations and simple setups
-            ├── telescope.lua     # Fuzzy finder and pickers
-            ├── lsp.lua          # Language server configs
-            ├── completion.lua    # Code completion behavior
-            ├── treesitter.lua   # Syntax highlighting settings
-            ├── mini.lua         # Mini plugin collection setup
-            ├── colorscheme.lua  # Theme configuration
-            └── conform.lua      # Code formatting rules
+├── init.lua              # entry point
+├── lua/
+│   ├── opts.lua          # editor options
+│   ├── keymaps.lua       # general keymaps
+│   ├── servers.lua       # LSP server definitions
+│   ├── utils.lua         # small helpers
+│   ├── config/
+│   │   └── lazy.lua      # lazy.nvim bootstrap + setup
+│   └── plugins/          # one file per plugin (lsp, completions, telescope, ...)
+└── lazy-lock.json        # pinned plugin versions
 ```
 
-## Key Mappings
+## Getting started
 
-Leader key: `Space`
+Clone it into your config spot and open Neovim — lazy.nvim grabs everything on the first run:
 
-### Navigation
-- `<C-h/j/k/l>` - Window navigation
-- `<C-d>/<C-u>` - Scroll down/up (centered)
+```sh
+git clone https://github.com/MaxwellKnight/nvim-config.git ~/.config/nvim
+nvim
+```
 
-### Telescope
-- `<leader>sf` - Find files
-- `<leader>sg` - Live grep
-- `<leader>sw` - Search current word
-- `<leader>/` - Search in current buffer
-- `<leader>s.` - Recent files
+Then run `:checkhealth` to see if anything's missing (some servers/formatters want their CLIs on your `PATH`).
 
-### LSP
-- `gd` - Go to definition
-- `gr` - Show references
-- `K` - Show documentation
-- `<leader>rn` - Rename
-- `<leader>ca` - Code actions
-- `[d/]d` - Previous/next diagnostic
+## A few handy keys
 
-### Editor
-- `<leader>f` - Format buffer
-- `<Esc>` - Clear search highlight
-- `<leader>e` - Show diagnostic float
+- `<C-Space>` — force the completion menu open
+- `gd` / `gr` — go to definition / find references
+- `<leader>ca` — code action
+- `<leader>rn` — rename symbol
+- `<leader>cf` — copy the current file's absolute path to the clipboard
 
-## LSP Servers
+## Adding a language server
 
-Automatically installs and configures:
-- lua_ls for Lua
-- pyright for Python
-- clangd for C/C++
-- rust-analyzer for Rust
-- eslint for JavaScript/TypeScript
+Drop a new entry in `lua/servers.lua` (key = the lspconfig server name) and mason takes care of installing it. That's it — completion and keymaps get hooked up automatically.
 
-Additional servers can be installed via `:Mason`
-
-## Notes
-
-- Format on save disabled for all filetypes
-- Treesitter auto-installs syntax support for commonly used languages
-- Custom statusline using mini.nvim
-- Fuzzy finding respects .gitignore
+Steal whatever's useful. 🙂
