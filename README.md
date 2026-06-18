@@ -1,22 +1,22 @@
 # My Neovim config
 
-Hey 👋 — this is my personal Neovim setup. It's a Lua config built on [lazy.nvim](https://github.com/folke/lazy.nvim), tuned for day-to-day dev work: LSP, fuzzy finding, completion, git, the usual good stuff. Originally riffed off the [kickstart](https://github.com/nvim-lua/kickstart.nvim) idea, then taken in my own direction.
+This is my personal Neovim setup — a Lua config built on [lazy.nvim](https://github.com/folke/lazy.nvim) and tuned for everyday development: LSP, fuzzy finding, completion, git integration, and a handful of quality-of-life plugins. It started from the [kickstart](https://github.com/nvim-lua/kickstart.nvim) project and has drifted in its own direction since.
 
-Leader key is `<Space>`.
+The leader key is `<Space>`.
 
 ## What's in here
 
-- **lazy.nvim** for plugins — bootstraps itself on first launch, so you don't have to
-- **LSP** via `nvim-lspconfig` + `mason` (servers auto-install). Currently wired up for `rust_analyzer`, `clangd`, and `lua_ls`
-- **Completion** with `nvim-cmp` + `LuaSnip` (no Copilot — it's intentionally disabled)
-- **Telescope** for fuzzy finding files, grep, symbols, the works
+- **lazy.nvim** for plugin management — it bootstraps itself on the first launch
+- **LSP** via `nvim-lspconfig` and `mason`, with servers installed automatically. Right now that's `rust_analyzer`, `clangd`, and `lua_ls`
+- **Completion** through `nvim-cmp` and `LuaSnip` (Copilot is disabled on purpose)
+- **Telescope** for fuzzy finding files, grep, and symbols
 - **Treesitter** for syntax highlighting (js/ts, go, c, lua, svelte, markdown)
-- **conform.nvim** for format-on-save (stylua, prettier + eslint, gofumpt)
-- **Harpoon** for jumping between the files you actually care about
-- **Oil** for editing the filesystem like a buffer
-- **Gitsigns** + git blame for git stuff inline
-- **mini.nvim** bits, comments, tmux navigation, and a DAP setup for debugging
-- **catppuccin** theme with a transparent background
+- **conform.nvim** for format-on-save (stylua, prettier with eslint, gofumpt)
+- **Harpoon** for jumping between the files I work in most
+- **Oil** for editing the filesystem like a regular buffer
+- **Gitsigns** and inline git blame
+- A few **mini.nvim** modules, commenting, tmux navigation, and a DAP setup for debugging
+- The **catppuccin** theme with a transparent background
 
 ## Layout
 
@@ -29,25 +29,25 @@ Leader key is `<Space>`.
 │   ├── servers.lua       # LSP server definitions
 │   ├── utils.lua         # small helpers
 │   ├── config/
-│   │   └── lazy.lua      # lazy.nvim bootstrap + setup
+│   │   └── lazy.lua      # lazy.nvim bootstrap and setup
 │   └── plugins/          # one file per plugin (lsp, completions, telescope, ...)
 └── lazy-lock.json        # pinned plugin versions
 ```
 
 ## Getting started
 
-Clone it into your config spot and open Neovim — lazy.nvim grabs everything on the first run:
+Clone it into your config directory and open Neovim — lazy.nvim installs everything on the first run:
 
 ```sh
 git clone https://github.com/MaxwellKnight/nvim-config.git ~/.config/nvim
 nvim
 ```
 
-Then run `:checkhealth` to see if anything's missing (some servers/formatters want their CLIs on your `PATH`).
+After that, run `:checkhealth` to spot anything missing. Some servers and formatters expect their CLI tools to be on your `PATH`.
 
-## A few handy keys
+## Handy keymaps
 
-- `<C-Space>` — force the completion menu open
+- `<C-Space>` — open the completion menu
 - `gd` / `gr` — go to definition / find references
 - `<leader>ca` — code action
 - `<leader>rn` — rename symbol
@@ -55,6 +55,4 @@ Then run `:checkhealth` to see if anything's missing (some servers/formatters wa
 
 ## Adding a language server
 
-Drop a new entry in `lua/servers.lua` (key = the lspconfig server name) and mason takes care of installing it. That's it — completion and keymaps get hooked up automatically.
-
-Steal whatever's useful. 🙂
+Add an entry to `lua/servers.lua`, keyed by the lspconfig server name, and mason installs it for you. Completion and keymaps get wired up automatically.
