@@ -18,11 +18,27 @@ return {
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-		-- Disable LSP dynamic file-watching registration. On macOS the default
-		-- libuv watcher opens one fd per directory; servers like rust-analyzer and
-		-- clangd register huge recursive globs (target/, build/) and exhaust the
-		-- open-file limit, crashing vim/_watch.lua with EMFILE. Servers keep doing
-		-- their own internal file watching, so functionality is unaffected.
+		-- Kill LSP file-watching at the BACKEND, not just via capabilities.
+		--
+		-- On macOS both built-in watch backends (vim._watch.watch and .watchdirs)
+		-- open one libuv fd per directory; servers register huge recursive globs
+		-- (target/, build/) and exhaust the open-file limit, crashing
+		-- vim/_watch.lua with EMFILE. Setting didChangeWatchedFiles.dynamic-
+		-- Registration = false is NOT enough: some servers (e.g. rust-analyzer)
+		-- register a watcher anyway, and Neovim honors that registration
+		-- regardless of the advertised capability. So we also replace the watch
+		-- function itself with a no-op -- this guarantees no fs_event handle is
+		-- ever created, whatever any server requests. Servers fall back to their
+		-- own internal file watching, so functionality is unaffected.
+		--
+		-- To re-enable real watching later (watchman's FSEvents backend is broken
+		-- on this machine, but its kqueue backend works with a `.watchmanconfig`
+		-- containing {"watcher":"kqueue"} at each project root), swap the no-op for:
+		--   require("vim.lsp._watchfiles")._watchfunc = require("watchman_watch").watch
+		-- and set dynamicRegistration = true below.
+		require("vim.lsp._watchfiles")._watchfunc = function()
+			return function() end
+		end
 		capabilities.workspace = capabilities.workspace or {}
 		capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = false }
 
